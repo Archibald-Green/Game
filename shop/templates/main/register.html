@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="col-12 col-sm-6 col-md-4 col-lg-4 offset-md-4 mt-4">
+    <h1 class="text-dark text-center">Регистрация</h1>
+    <div class="block p-3 text-center">
+        <form method="POST" action="/register">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="login">Ваш логин</label>
+                <input type="login" class="form-control" name="login" placeholder="Введите ваш логин" id="loginInput">
+                <p id="loginInputError" class="text-danger d-none">Неправильный формат логина</p>
+            </div>
+            <div class="form-group">
+                <label for="password">Ваш пароль</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Введите ваш пароль" >
+            </div>
+            <div class="form-group">
+                <label for="psw-repeat">Повторите пароль</label>
+                <input type="password" class="form-control" placeholder="Повторите пароль" name="Repeat Password" >
+            </div>
+            <div class="form-group">
+                <label for="email">Ваш email</label>
+                <input type="email" class="form-control" name="email" placeholder="Введите ваш логин" >
+                {% comment %} <p id="errorLogin" class="text-danger d-none">Логин не должен содержать цифр</p> {% endcomment %}
+            </div>
+            <input type="submit" id="myButton" class="btn btn-block btn-outline-light" value="Залогиниться">
+        </form>
+                
+    </div> 
+</div>
+{% endblock %}
