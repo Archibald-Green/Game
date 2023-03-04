@@ -19,7 +19,7 @@ class User(models.Model):
     
 #     location = models.ImageField(upload_to='/')
 
-# class Book (models.Model):
-#     '''Interactive function'''
-#     title = models.TextField(name ='title', blank = False, unique= True)
+class Book (models.Model):
+    '''Interactive function'''
+    title = models.TextField(name ='title', unique= True)
     

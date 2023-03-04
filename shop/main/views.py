@@ -3,7 +3,9 @@ from django.shortcuts import redirect, render
 from . import models, forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from main import serializers, models
 
 # Create your views here.
 def index(request):
@@ -59,3 +61,11 @@ def register(request):
         
         return HttpResponse("Invalid data") 
     return render(request, 'main/register.html')
+
+
+class UserListView (generics.ListAPIView):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
+    permission_classes = [IsAuthenticated]
+    
+    
