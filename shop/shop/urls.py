@@ -18,20 +18,45 @@ from django.contrib import admin
 from django.urls import path, include
 from main import views
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_view
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenVerifyView,
 )
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index', views.index),
-    path('login', views.login),
-    path('register', views.register),
+    path('index', views.index, name="index"),
+    path('login/', views.CustomLoginView.as_view(), name="login"),
+    path('register', views.RegisterView.as_view(), name = 'register'),
+    path('book/<int:book_id>',views.book, name='book'),
+    path('book/<int:book_id>/page/<int:page_id>',views.page, name='page'),
+    path('page_add',views.AddPageView.as_view(), name = 'add'),
+    path('logout_user', views.logout_user, name= 'logout' ),
+    # path('main_game', views.index),
+    
+    
     path ('api/users/', views.UserListView.as_view(), name ='get_users'),
     path ('api/token/', TokenObtainPairView.as_view(), name ='token_obtain_pair' ),
     path ('api/token/refresh/', TokenRefreshView.as_view(), name ='token_refresh' ),
-]
+    path('api/token/verify', TokenVerifyView.as_view(), name = 'token_varify'),
+    
+    # path('sign_up/', views.sign_up, name='users-sign-up'),
+    # path('profile/', views.profile, name='users-profile'),
+    # path('log', auth_view.LoginView.as_view(template_name='login.html'),
+    #      name='users-login'),
+    # path('logout/', auth_view.LogoutView.as_view(template_name='users/logout.html'),
+    #      name='users-logout'),
+    # path('password_reset/', auth_view.PasswordResetView.as_view(template_name='users/password_reset.html'),
+    #      name='password_reset'),
+    # path('password_reset_done/', auth_view.PasswordResetDoneView.as_view(template_name='users/password_reset_done.html'),
+    #      name='password_reset_done'),
+    # path('password_reset_confirm/<uidb64>/<token>/', auth_view.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'),
+    #      name='password_reset_confirm'),
+    # path('password_reset_complete/', auth_view.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
+    #      name='password_reset_complete'),
+    ]   
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

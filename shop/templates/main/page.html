@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% comment %} {% block title %}Заголовок{% endblock %} {% endcomment %}
+{% block content %}
+   {% comment %} {{page.book.title}}:{{ page.title}} {% endcomment %}
+   {{page.body}}
+   <ul>
+
+    <img src="{{page.cover_art.url}}">
+
+        {% for link in page.pagelink_set.all %}
+        <li><a href ="{% url 'page' page.book.id  link.to_page.id %}">
+            {{ link.name }}
+            {% if link.cover_art%}
+            {{ link.cover_art.url }}
+            {% comment %} <img src ={% static bookPage.cover_art.filename %}> {% endcomment %}
+            {% endif %}
+        </a></li>
+        {%endfor%}   
+    </ul>
+{% endblock %}

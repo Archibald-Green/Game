@@ -1,0 +1,17 @@
+{% extends 'home_page.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card card-body">
+          <form method="POST">
+            {% csrf_token %}
+            {{ctx_form.as_p}}
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,4 +1,11 @@
 {% extends 'layout.html' %}
+{% comment %} {% block title %}Заголовок{% endblock %} {% endcomment %}
 {% block content %}
-        
+    <ul>
+        {%for book in books%}
+        <li><a href ='book/{{ book.id}}'>
+            {{book.title}}
+        </a></li>
+        {%endfor%}   
+    </ul>
 {% endblock %}
