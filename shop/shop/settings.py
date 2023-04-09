@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     "widget_tweaks",
+    'crispy_forms',
+    'crispy_bootstrap4',
+    'api',
     
     
 ]
@@ -196,5 +199,14 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = "main.CustomUser"
 
-LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'n.a.98.r.a@gmail.com'
+EMAIL_HOST_PASSWORD = 'fugkqxzkofjuxulb'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

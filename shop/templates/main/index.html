@@ -1,11 +1,29 @@
 {% extends 'layout.html' %}
-{% comment %} {% block title %}Заголовок{% endblock %} {% endcomment %}
+{% load static %}
+
+{% block css_add %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}"/>
+{% endblock css_add %}
+
 {% block content %}
-    <ul>
-        {%for book in books%}
-        <li><a href ='book/{{ book.id}}'>
-            {{book.title}}
-        </a></li>
-        {%endfor%}   
-    </ul>
+<div class="index">
+    <div class="container">
+        <div class="index_block">
+            <ul>
+                <h1 class = 'title_book' > Доступные сценарии :</h1>
+                {%for book in books%}
+                <li>
+                        <a class="name_book" href ='book/{{ book.id}}' target="_blank" >
+                        {{book.title}}
+                    
+                        </a>
+                </li>
+                {%endfor%}   
+            </ul>
+        </div>
+    </div>
+</div> 
+
 {% endblock %}
+
+

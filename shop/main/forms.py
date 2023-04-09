@@ -47,7 +47,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email')
+        fields = ('username', 'email', 'password1', 'password2')
         widgets = {
             'username': forms.TextInput (attrs={'class': 'form-input'}),
             'password': forms.PasswordInput(attrs={'class': 'form-input'}),
@@ -67,6 +67,3 @@ class BookPageForm(forms.ModelForm):
         fields = "__all__"
         
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['title'].widget.attrs.update({'class': 'form-control'})

@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.index {
+    height: 100vh;
+    background: #171C20;
+    background-size: cover;
+    background-position: center;
+    padding: 50px;
+}
+
+
+.index_block {
+    background: #3a3a3aa2;
+    /* display: inline-block; */
+    text-align: center;
+    width: device-width;
+    height: device-width;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 20px;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    font-weight: bold;
+
+}
+
+.name_book {
+    display: block;
+    margin: auto;
+    padding: 1rem 1.25rem;
+    font-family: sans-serif;
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: white;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+    z-index: 1;
+}
+.name_book:after {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    right: 1.25rem;
+    left: 1.25rem;
+    background-color: #fff;
+    transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+    transform-origin: bottom center;
+    z-index: -1;
+}
+.name_book:hover {
+    color: #2d2d2d;
+}
+.name_book:hover:after {
+    right: 0;
+    left: 0;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .index {
+      padding: 20px;
+    }
+    
+    .index_block {
+      width: 100%;
+      height: auto;
+      font-size: 16px;
+    }
+    
+    .name_book {
+      font-size: 1.2rem;
+    }
+  }

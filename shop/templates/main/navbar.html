@@ -1,0 +1,32 @@
+<nav class ='navbar navbar-expand-md navbar-light bg-dark sticky-top'>
+    <div class = 'container-fluid'>
+            <a href ='#' class='navbar-brand'></a>
+            {% comment %} <img src = '/static/css/logo.png'
+            class="img-fluid" width="60" height="60" alt = 'logo'> {% endcomment %}
+            <button class = 'navbar-toggler' type='button' data-toggle ='collapse' data-target = "#collapsibleNavbar">
+                <span class ='navbar-toggler-icon' ></span>  
+            </button>
+            <div class='collapse navbar-collapse' id='navbarResponsive'>
+                <ul class='navbar-nav ml-auto'>
+                    {% if user.is_authenticated %}
+                        <li class= 'nav-item active'>
+                            <a  class = "nav-link" href= "{% url 'index' %}" style="color:#ffffff" onclick="window.location.href = '/index';" class ='nav-link'>Главная</a>
+                            <a  class = "nav-link"  style="color:#ffffff"  class ='nav-link'>Добро пожаловать: {{user.username}}</a> 
+                            <a  class = "nav-link" href= "{% url 'logout' %}" style="color:#ffffff" onclick="window.location.href = '/login';" class ='nav-link'>Выйти</a>
+                        </li>
+                    {% else %}
+                        <li class= 'nav-item active'>
+                            <a  class = "nav-link" href= "{% url 'login' %}" style="color:#ffffff" onclick="window.location.href = '/login';" class ='nav-link'>Логин</a>
+                        </li>
+                        <li class= 'nav-item'>
+                            <a class = "nav-link" href= "#" style="color:#ffffff" onclick="window.location.href = '/register';"  class ='nav-link'>Регистрация</a>
+                        </li>
+                    {% endif %}
+                    <li class= 'nav-item'>
+                        <a class = "nav-link" href= "#" style="color:#ffffff" onclick="window.location.href = '/about';"  class ='nav-link'>О нас</a>
+                    </li>
+                </ul>
+            
+            </div>
+        </div>
+    </nav> 

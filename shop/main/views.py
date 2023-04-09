@@ -13,8 +13,15 @@ from django.urls import reverse, reverse_lazy
 from .models import BookPage
 from django.views.generic import View
 from django.views.generic.edit import CreateView
-
-
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse
+from django.contrib.auth.forms import PasswordResetForm
+from main.models import CustomUser
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from random import randint
 
 
@@ -26,35 +33,10 @@ def index(request):
         
     }  )
     
-def book(request, book_id):
-    b = get_object_or_404(models.Book, id=book_id)
-    
-    if not b.first_page:
-        print ('_________________________-')
-        return render(request, 'main/book.html', context ={
-        'book': b,
-        })
-    try: 
-        print ('zzzzzzzzzzzzzzzzzaaaaaaaaaaaaaaaa')
-        progress = models.BoolProgress.objects.get(book = b, user = request.user.id)
-    except models.BoolProgress.DoesNotExist:
-        print ('aaaaaaaaaaaaaaaa')
-        progress = models.BoolProgress.start_reading(user = request.user.id, book = b )
-    return redirect (reverse('page', kwargs={'book_id': b.id, 'page_id': progress.book_page.id}))
-
-
-def page(request,book_id, page_id):
-    query = models.BoolProgress.objects.filter(book = book_id, user = request.user.id, book_page = page_id)
-    if not query:
-        print (request.user.id)
-        print ('aaaaaaaaaaaaaaaaffffffff')
-        return redirect (reverse('book', kwargs={'book_id': book_id}))
-    
-    return render(request, 'main/page.html', context ={
-        'page': get_object_or_404(models.BookPage, book__id=book_id, id=page_id,
-        ),
+def about(request):
+    return render(request, 'main/about.html', context ={
+         
     }  )
-
 # def get_random_book():
 #     pages_count = BookPage.objects.all().count()
 #     rand_page_id = randint(2, pages_count)
@@ -64,61 +46,9 @@ def page(request,book_id, page_id):
 #     data = []
     
 
-# def login(request):
-#     form = forms.UserLoginForm()
-#     if request.method == "POST":
-#         print("EMAIL: ", request.POST.get("email"))
-#         print("PASSWORD: ", request.POST.get("password"))
-        
-#         form = forms.UserLoginForm(request.POST)
-        
-#         if form.is_valid():
-#             user = models.User.objects.filter(email=request.POST.get("email"), password=request.POST.get("password")).exists()
-#             if user == True:
-#                 return redirect('/index')
-#             else:
-#                 form.add_error('email', 'Неправильный логин или пароль')
-                
-#                 for error in form.errors:
-#                     print(dir(error))
-
-#         return render(request, "main/log.html", context={'form': form})
-
-#     return render(request, 'main/log.html', context={'form': form})
-
-
-
-# def register(request):
-    
-#     if request.method == "POST":
-        
-#         login = request.POST.get("login")
-        
-#         password = request.POST.get("password")
-        
-#         email = request.POST.get("email")
-        
-        
-#         user = models.User(
-#             login = login,
-#             password = password,
-#             email = email,
-#         )
-        
-#         form = forms.UserRegisterForm (request.POST)
-        
-#         if form.is_valid(): 
-#             user.save()
-#             user = authenticate(request.POST)
-#             messages.success(request, f'Создан аккаунт {email}!')
-#             return redirect('/login')
-        
-#         return HttpResponse("Invalid data") 
-#     return render(request, 'main/register.html')
-
 class RegisterView (CreateView):
     form_class = forms.SignUpForm   
-    template_name = 'main/register.html'
+    template_name = 'main/register1.html'
     success_url = reverse_lazy('login')
     success_message = "Your profile was created successfully"
     
@@ -148,7 +78,7 @@ class UserListView (generics.ListAPIView):
     
 class CustomLoginView(LoginView):
     form_class = forms.CustomLoginForm   
-    template_name = 'main/login.html'
+    template_name = 'main/login1.html'
     
     def get_success_url(self):
         return reverse_lazy('index')
@@ -195,3 +125,90 @@ def logout_user(request):
 
 def profile(request):
 	return render(request, 'main/index.html')
+
+def password_reset_request(request):
+    if request.method == 'POST':
+        password_form = PasswordResetForm(request.POST)
+        if password_form.is_valid():
+            data = password_form.cleaned_data['email']
+            user_email = CustomUser.objects.filter(Q(email =data))
+            if user_email.exists():
+                for user in user_email:
+                    subject = 'Сброс пароля'
+                    email_template_name = 'main/password_message.txt'
+                    parametrs = {
+                        'email': user.email,
+                        'domain': '127.0.0.1:8000',
+                        'site_name': 'One_day',
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http', 
+                    }
+                    email = render_to_string(email_template_name, parametrs)
+                    try:
+                        send_mail(subject, email, '', [user.email], fail_silently=False )
+                    except: 
+                        return HttpResponse('Invalid Header')
+                    return redirect('password_reset_done')
+    else:
+        password_form = PasswordResetForm()
+    context = {
+        'password_form': password_form,
+    }
+    return render (request, 'main/password_reset.html', context)
+
+def on_progress(view):
+    def inner(request, book_id, **kwargs):
+        try: 
+            print ('zzzzzzzzzzzzzzzzzaaaaaaaaaaaaaaaa')
+            progress = models.BoolProgress.objects.get(book=book_id, user=request.user)
+            print ('sadasdasdasdasdasdasdasdasdasdasdasdas')
+        except models.BoolProgress.DoesNotExist:
+            return redirect(reverse('book', kwargs={'book_id': book_id}))
+        return view (
+            request = request, progress = progress, book_id = book_id, **kwargs 
+            )
+    return inner 
+
+def book(request, book_id):
+    b = get_object_or_404(models.Book, id=book_id)
+    if not b.first_page:
+        print ('_________________________-')
+        return render(request, 'main/book.html', context ={'book': b,})
+    try: 
+        progress = models.BoolProgress.objects.get(book=b, user=request.user)
+        print ('zccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')
+    except models.BoolProgress.DoesNotExist:
+        progress = models.BoolProgress.start_reading(user = request.user, book = b )
+        print ('aaaaaaaaaaaaaaaa')
+    return redirect (reverse('page', kwargs={'book_id': b.id, 'page_id': progress.book_page.id,}))
+
+@on_progress
+def page(request, progress, book_id, page_id):
+    
+    page = get_object_or_404(models.BookPage, book__id = book_id, id = page_id,)
+    progress.book_page = page
+    progress.save()
+    
+    
+    
+    links = [(link, link.has_all_need(list(progress.items.all())))
+             
+             for link in page.pagelink_set.all()
+             
+             ]
+    
+    return render (request, 'main/page.html', context={
+        'page': page,
+        'progress': progress,
+        'links': links,
+        'page_items': page.items.exclude(id__in = progress.items.only('id')),
+        
+    })
+
+@on_progress
+def take (request,progress, book_id, page_id, item_id ):
+   item = get_object_or_404(models.Item, id = item_id)
+   progress.items.add(item)
+   return redirect (reverse('page', kwargs={'book_id': book_id, 'page_id': page_id,}))
+

@@ -1,20 +1,65 @@
 {% extends 'layout.html' %}
-{% comment %} {% block title %}Заголовок{% endblock %} {% endcomment %}
+{% load static %}
+
+{% block css_add %}
+    <link rel="stylesheet" href="{% static 'css/page.css' %}"/>
+{% endblock css_add %}
+
 {% block content %}
-   {% comment %} {{page.book.title}}:{{ page.title}} {% endcomment %}
-   {{page.body}}
-   <ul>
-
-    <img src="{{page.cover_art.url}}">
-
-        {% for link in page.pagelink_set.all %}
-        <li><a href ="{% url 'page' page.book.id  link.to_page.id %}">
-            {{ link.name }}
-            {% if link.cover_art%}
-            {{ link.cover_art.url }}
-            {% comment %} <img src ={% static bookPage.cover_art.filename %}> {% endcomment %}
-            {% endif %}
-        </a></li>
-        {%endfor%}   
-    </ul>
+<div class="page">
+    <div class="container">
+        <div class="page_block"> 
+            <div class="main_block">
+                        <div class="text_block">
+                                    {{page.body}}
+                                    {% if page_items %}
+                                    <h3> Вы видите  </h3>
+                                        <ul>
+                                            {% for item in page_items %}
+                                                <li>
+                                                    <a href="{% url 'take' page.book.id page.id item.id %}">
+                                                    {{ item.name }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                    <h3> Куда идти?  </h3>
+                                    <ul>      
+                                            {% for link, passable in links  %}
+                                                <li>
+                                                    {% if passable %}
+                                                        <a href ="{% url 'page' page.book.id  link.to_page.id %}">
+                                                            {{ link.name }}
+                                                        </a>
+                                                    {% else %}
+                                                    {{ link.name }}
+                                                    {% endif %}
+                                                </li>
+                                            {%endfor%}   
+                                  </ul>
+                        </div>  
+                                <div class="item_block">
+                                    {% if progress.items.all %}
+                                    <h3>Ваш Инвентарь</h3> 
+                                    <ul>
+                                            {% for item in progress.items.all %}
+                                            <li>
+                                            {{item.name}}
+                                            </a></li>
+                                            {%endfor%}   
+                                        </ul>
+                                    {% endif %}
+                                </div>  
+                    </div>
+                <div class="image_block">
+                    <img class ='image_view'src="{{ page.cover_art.url }}" />
+                </div>     
+        </div>
+    </div>
+</div> 
 {% endblock %}
+
+
+
+

@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block css_add %}
+    <link rel="stylesheet" href="{% static 'css/register1.css' %}"/>
+{% endblock css_add %}
+
+
+{% block content %}
+<div class="register">
+    <div class="container">
+        <div class="register_block">
+
+            <h1 class="register_title">Регистрация</h1>
+
+                <form method="POST" action="/register" >
+                    {% csrf_token %}
+
+                    {% comment %} {% for field in form %}
+
+                        <p class="form_label">
+                            <label a for='{{field.id_for_label}}'>{{ field.label }}: </label>
+                            {% render_field field class="form_control" %}
+                        </p>
+                        <div class = 'form_error'> {{field.errors}}</div>
+                    {%endfor%} {% endcomment %}
+                    <div class="form_block">
+                        <div class="form_field">Логин<h3>{{ form.username }}</h3></div>
+                        <div class="form_field">Почта<h3>{{ form.email }}</h3></div>
+                        <div class="form_field">Пароль<h3>{{ form.password1 }}</h3></div>
+                        <div class="form_field">Повтор пароля<h3>{{ form.password2 }}</h3></div>
+                    </div>
+                    
+                    <button class="form_btn" type="submit">Зарегистрироваться</button>
+                </form>
+        </div>
+    </div>
+</div> 
+
+{% endblock content %}

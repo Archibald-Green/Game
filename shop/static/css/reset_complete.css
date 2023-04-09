@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: url(/static/css/fone1.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.form_btn {
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: #879FFF;
+    margin-top: 20px;
+    padding: 5px 15px;
+    transition: background 0.2s ease;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.form_btn:hover {
+    background: #6f83d2;
+}

@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.register {
+    height: 100vh;
+    width:100%;
+    background: url(/static/css/fone1.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 50px;
+}
+
+input {
+    width:250px;
+    height: 25px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    padding: 0 10px;
+}
+
+input:focus {
+    outline: none;
+}
+
+
+.register_block {
+    background: #313131a2;
+    /* display: inline-block; */
+    text-align: center;
+    width: 40%;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 20px;
+}
+.register_title {
+    color: #fff;
+    font-size: 25px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.form_field {
+    color: #fff;
+    font-size: 20px;
+}
+
+.form_btn {
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: #879FFF;
+    margin-top: 20px;
+    padding: 5px 15px;
+    transition: background 0.2s ease;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.form_btn:hover {
+    background: #6f83d2;
+}
+
+@media (max-width: 768px) {
+
+    .register {
+        height: 100vh;
+        width:100%;
+        background: url(/static/css/fone1.jpg) no-repeat;
+        background-size: cover;
+        background-position: center;
+        padding: 50px;
+    }
+    
+    input {
+        width:100%;
+        height: auto;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        padding: 0 10px;
+    }
+    
+    input:focus {
+        outline: none;
+    }
+    
+    
+    .register_block {
+        background: #313131a2;
+        /* display: inline-block; */
+        text-align: center;
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .register_title {
+        color: #fff;
+        font-size: 25px;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+    
+    .form_field {
+        color: #fff;
+        font-size: 16px;
+    }
+    
+}

@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css_add %}
+    <link rel="stylesheet" href="{% static 'css/login1.css' %}"/>
+{% endblock css_add %}
+
+
+{% block content %}
+<div class="login">
+    <div class="container">
+        <div class="login_block">
+             <img 
+                    src="/static/css/logo.png" class="img-fluid " width:'200' height:'200'> 
+            <h1 class="login_title">Авторизация</h1>
+
+                <form method="POST" action="/login/" >   
+                    {% csrf_token %}
+
+                    <div class="form_block">
+                        <div class="form_field">Логин<h3>{{ form.username }}</h3></div>
+                        <div class="form_field">Пароль<h3>{{ form.password }}</h3></div>
+                    </div>
+
+                    <button class="form_btn" type="submit">Авторизация</button>
+                </form>
+                <button class="form_btn" onclick="window.location.href = '/password_reset/';">Забыли пароль?</button>
+                <div class = 'error'>
+                    {% if form.errors %}
+                        <p class="error-message">Неправильный логин или пароль</p>
+                    {% endif %}
+                </div>
+        </div>
+    </div>
+</div> 
+
+{% endblock content %}

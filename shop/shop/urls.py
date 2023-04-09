@@ -19,23 +19,40 @@ from django.urls import path, include
 from main import views
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_view
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
 
+from main import api_views
+
 
 urlpatterns = [
+    # path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('index', views.index, name="index"),
     path('login/', views.CustomLoginView.as_view(), name="login"),
     path('register', views.RegisterView.as_view(), name = 'register'),
     path('book/<int:book_id>',views.book, name='book'),
     path('book/<int:book_id>/page/<int:page_id>',views.page, name='page'),
+    path('book/<int:book_id>/page/<int:page_id>/take/<int:item_id>',views.take, name='take'),
     path('page_add',views.AddPageView.as_view(), name = 'add'),
     path('logout_user', views.logout_user, name= 'logout' ),
+    path('about', views.about, name="about"),
+    path('api/api/dfdasdas/', api_views.BookView.as_view()), 
+    
+    path('password_reset/', views.password_reset_request, name = 'password_reset' ),
+    path('password_reset_done', auth_view.PasswordResetDoneView.as_view(template_name='main/password_reset_done.html'),
+         name='password_reset_done'),
+    path('password_reset_confirm/<uidb64>/<token>/', auth_view.PasswordResetConfirmView.as_view(template_name='main/password_reset_confirm.html'),
+         name='password_reset_confirm'),
+    path('password_reset_complete/', auth_view.PasswordResetCompleteView.as_view(template_name='main/password_reset_complete.html'),
+         name='password_reset_complete'),
     # path('main_game', views.index),
+    
+    
     
     
     path ('api/users/', views.UserListView.as_view(), name ='get_users'),

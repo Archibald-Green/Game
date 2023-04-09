@@ -1,18 +1,25 @@
 {% extends 'layout.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
+<div class="container-fluid with-image">
+    <div class="row">
         <div class="col-12 col-sm-6 col-md-4 col-lg-4 offset-md-4 mt-4">
             <div class="card br-25 p-3">
                 <div class="text-center">
                     <img 
                     src="/static/css/logo.png" class="img-fluid " width:'200' height:'200'> 
-                    {% comment %} class="photo"> {% endcomment %}
+
                 </div>
                 <form method="POST" action="/login/">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    {% comment %} <input class="text-light bg-dark" type="button" id="myButton" class="btn" value="Залогиниться"> {% endcomment %}
+                    {{ form|crispy  }}
+                    
                     <button type"submit" class="btn btn-block login">Залогиниться</button>
+                   
                 </form>
+              
             </div>
         </div>
+    </div>
+</div>
 {% endblock %}

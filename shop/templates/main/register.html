@@ -1,18 +1,32 @@
 {% extends 'layout.html' %}
+{% load widget_tweaks %}
+
+{% css_add %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}"/>
+{% endblock %}
+
+
 {% block content %}
 {{sname}}
-<div class="col-12 col-sm-6 col-md-4 col-lg-4 offset-md-4 mt-4">
-    <h1 class="text-dark text-center">Регистрация</h1>
-    <div class="block p-3 text-center">
-        <form method="POST" action="/register">
-            {% csrf_token %}
-            {% for f in form%}
-                <p><label class ='form-label' for='{{f.id_for_label}}'>{{ f.label }}: </label>{{ f }}</p>
-                <div class = 'form-error'> {{f.errors}}</div>
-            {%endfor%}
-            <input type="submit" id="myButton" class="btn btn-block btn-outline-light" value="Залогиниться">
-        </form>
-                
+<div class="container-fluid with-image">
+    <div class="row">
+        {% comment %} <div class="col-12 col-sm-6 col-md-4 col-lg-4 offset-md-4 mt-4"> {% endcomment %}
+            <h1 class="text-dark text-center">Регистрация</h1>
+            <div class="block p-3 text-center">
+                <form method="POST" action="/register" >
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <p><label class ='form-label'a for='{{field.id_for_label}}'>
+                            
+                            {{ field.label }}: </label>
+                            {% render_field field class="form-control" %}
+                        </p>
+                        <div class = 'form-error'> {{field.errors}}</div>
+                    {%endfor%}
+                    <input type="submit" id="myButton" class="btn btn-block btn-outline-light" value="Залогиниться">
+                </form>
+            </div>
+        </div>
     </div> 
 </div>
 {% endblock %}

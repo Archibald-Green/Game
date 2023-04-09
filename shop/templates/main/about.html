@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css_add %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}"/>
+{% endblock css_add %}
+
+
+{% block content %}
+<div class="about">
+    <div class="container">
+        <div class="preview-img">
+            <img src="/static/css/about1.jpg" alt="preview-img" >
+        </div>
+
+        <div class="about_block">
+             <p>Этот проект был создан человеком, который хотел сделать хоть что-то с web и сдать курсовую. Хоть он неидеальный и можно было сделать много чего, но оно как-то работает и будет вроде дальше работать. Как разработчик этого сайта хотел бы пожелать вам веселой игры! Сделал этот сайт студент группы ИС-21-3 Нарикбаев Арслан<p>
+        </div>
+    </div>
+</div> 
+
+{% endblock content %}

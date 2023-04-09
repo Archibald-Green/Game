@@ -1,14 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
 body, html{
-    width: 100%
+    width: 100%;
+    height: 100%;
 }
 
-.background {
+.with-image {
     background: url(fone1.jpg) center;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background-size: cover;
 }
 
 .wrap {

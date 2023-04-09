@@ -1,19 +1,30 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% load widget_tweaks %}
-{% comment %} {% block title %}Заголовок{% endblock %} {% endcomment %}
+
+{% block css_add %}
+    <link rel="stylesheet" href="{% static 'css/page_add.css' %}"/>
+{% endblock css_add %}
+
 {% block content %}
     {% comment %} <form action="form1.php" method="post"> {% endcomment %}
         {% comment %} <div>Название главы</div> {% endcomment %}
         {% comment %} <input type="text" name="title_page" class = "title_page" required="required"> {% endcomment %}
-        <div class = "text-center">
-            <form method="POST" action = '/page_add'>
-                {% csrf_token %}
-                    {% for field in form.visible_fields %}
-                        {% render_field field class="form-control" %}
-                    {% endfor %}
-                    <input type="submit" id="myButton" class="btn btn-block btn-outline-light" value="Опубликовать">
-            </form>
+        <div class = 'container'>
+            <div class = 'page_add_block'>
+            
+                <div class = "text-center">
+                    <form method="POST" action = '/page_add'>
+                        {% csrf_token %}
+                        {% for field in form.visible_fields %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {% render_field field class="form-control" %}
+                            </div>
+                        {% endfor %}
+                            <input type="submit" id="myButton" class="btn btn-block btn-outline-light" value="Опубликовать">
+                    </form>
+                </div>
+            </div>
         </div>
-        {% comment %} </form> {% endcomment %}
 {% endblock %}

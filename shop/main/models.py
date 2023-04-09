@@ -128,10 +128,13 @@ class Book (models.Model):
         return '{self.title} ({self.id})'.format(self=self)
     
 class BookPage(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE,)
-    title = models.TextField(name ='title')
-    body =models.TextField(name='body')
-    cover_art = models.ImageField(upload_to='book_images', null =True, blank=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, verbose_name= 'Книга')
+    title = models.CharField(max_length = 255 , name ='title', verbose_name= ' Заголовок')
+    items = models.ManyToManyField('main.Item', blank=True, verbose_name= 'Предметы')
+    body =models.TextField(name='body', verbose_name= 'Основной текст')
+    cover_art = models.ImageField(upload_to='book_images', null =True, blank=True, verbose_name= 'Картинка')
+    
+        
     def __str__(self):
         return '{self.title} ({self.id})'.format(self=self)
     
@@ -139,23 +142,50 @@ class PageLink(models.Model):
     from_page = models.ForeignKey(BookPage, on_delete=models.CASCADE)
     to_page = models.ForeignKey(BookPage, related_name ='to_page', on_delete=models.CASCADE,)
     name = models.TextField()
-    def __str__(self):
-        return '{self.from_page.title} -> {self.to_page.title} ({self.id})'.format(self=self)
     
+    items = models.ManyToManyField('main.Item', blank=True) 
     
     class Meta:
         unique_together = ['from_page', 'to_page']
+        
+    def __str__(self):
+        return '{self.from_page.title} -> {self.to_page.title} ({self.id})'.format(self=self)
+     
+       
+    def has_all_need(self,items):
+        return all(i in items for i in self.items.all())
+    
+class Item (models.Model):
+    name = models.TextField()
+    
+    def __str__(self):
+        return '{self.name}'.format(self=self)
         
 class BoolProgress (models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     book_page = models.ForeignKey(BookPage, on_delete=models.CASCADE)
-    
+    items = models.ManyToManyField(Item, blank=True)
+    is_passed = models.BooleanField("Страница пройдена", default=False)
+
     class Meta:
         unique_together = ['user', 'book']
-        
+
     @classmethod
     def start_reading(cls, user, book):
-        progress = BoolProgress(user = user, book = book, book_page = book.first_page)
+        progress = BoolProgress(
+            user=user, book=book, book_page=book.first_page,
+        )
         progress.save()
         return progress
+    
+    
+# class ProgressSave (models.Model):
+   
+#     progress  = models.ForeignKey(BoolProgress, on_delete=models.CASCADE)
+#     book_page = models.ForeignKey(BookPage, on_delete=models.CASCADE)
+#     items = models.ManyToManyField(Item, blank=True) 
+    
+
+    
+    

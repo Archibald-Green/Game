@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% comment %} {% block title %}Заголовок{% endblock %} {% endcomment %}
+{% block content %}
+   {% comment %} {{page.book.title}}:{{ page.title}} {% endcomment %}
+   {{page.body}}
+   {% if page_items %}
+   <h3> Вы видите  </h3>
+    <ul>
+        {% for item in page_items %}
+              <li>
+                <a href="{% url 'take' page.book.id page.id item.id %}">
+                  {{ item.name }}
+                </a>
+              </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+   <h3> Куда идти?  </h3>
+   <ul>
+        <img src="{{ page.cover_art.url }}" />
+        {% for link, passable in links  %}
+            <li>
+                {% if passable %}
+                    <a href ="{% url 'page' page.book.id  link.to_page.id %}">
+                        {{ link.name }}
+                    </a>
+                {% else %}
+                {{ link.name }}
+                {% endif %}
+            </li>
+        {%endfor%}   
+    </ul>
+    {% if progress.items.all %}
+    <h3>Ваш Инвентарь</h3> 
+    <ul>
+            {% for item in progress.items.all %}
+            <li>
+               {{item.name}}
+            </a></li>
+            {%endfor%}   
+        </ul>
+    {% endif %}
+{% endblock %}
